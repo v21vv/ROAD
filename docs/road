@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة رواد التعليمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #1a1a1a;
+            position: relative;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Dark UAE Flag Background */
+        .uae-flag {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(to bottom, 
+                #8B0000 0%, #8B0000 33.33%, 
+                #2a2a2a 33.33%, #2a2a2a 66.66%, 
+                #0a0a0a 66.66%, #0a0a0a 100%);
+            opacity: 0.9;
+        }
+
+        .uae-flag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 25%;
+            height: 100%;
+            background: #004d2a;
+        }
+
+        /* Animated particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Overlay */
+        .glass-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            z-index: -1;
+        }
+
+        /* Header */
+        .header {
+            padding: 30px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInDown 1s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .subtitle {
+            color: #b0b0b0;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Platform Tabs */
+        .platform-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .platform-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .platform-tab:hover::before {
+            left: 100%;
+        }
+
+        .platform-tab:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .platform-tab.active {
+            background: rgba(255, 255, 255, 0.95);
+            color: #1a1a1a;
+            transform: scale(1.08);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .platform-tab.all.active {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: white;
+        }
+
+        .platform-tab.telegram.active {
+            background: linear-gradient(135deg, #0088cc, #005f8a);
+            color: white;
+        }
+
+        .platform-tab.whatsapp.active {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .platform-tab i {
+            font-size: 1.5rem;
+        }
+
+        .platform-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* Search Container */
+        .search-container {
+            margin: 25px auto;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 60px 18px 25px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+        }
+
+        /* Grade Sections */
+        .grade-section {
+            margin: 30px 20px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .grade-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .grade-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00732F, #005422);
+            border-radius: 12px;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .grade-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .grade-count {
+            margin-right: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        /* Links Container */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        /* Link Card */
+        .link-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .link-card.telegram {
+            border-right: 4px solid #0088cc;
+        }
+
+        .link-card.whatsapp {
+            border-right: 4px solid #25D366;
+        }
+
+        .link-card h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .link-card a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card.telegram a {
+            background: linear-gradient(135deg, #0088cc, #005f8a);
+        }
+
+        .link-card.telegram a:hover {
+            background: linear-gradient(135deg, #005f8a, #004466);
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(0, 136, 204, 0.4);
+        }
+
+        .link-card.whatsapp a {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+        }
+
+        .link-card.whatsapp a:hover {
+            background: linear-gradient(135deg, #128C7E, #0D5F54);
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .link-card .platform-icon {
+            margin-left: 10px;
+            font-size: 1.3rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0, 0, 0, 0.8);
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .platform-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .platform-tab {
+                width: 85%;
+                justify-content: center;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #00732F;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* No Results Message */
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.3rem;
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin: 40px 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="uae-flag"></div>
+    <div class="particles" id="particles"></div>
+    <div class="glass-overlay"></div>
+
+    <header class="header">
+        <h1>منصة رواد التعليمية</h1>
+        <p class="subtitle">منصة تعليمية متكاملة لجميع المراحل الدراسية</p>
+        
+        <div class="platform-tabs">
+            <button class="platform-tab all active" data-platform="all">
+                <i class="fas fa-globe"></i>
+                <span>الكل</span>
+                <span class="platform-count" id="allCount">0</span>
+            </button>
+            <button class="platform-tab telegram" data-platform="telegram">
+                <i class="fab fa-telegram"></i>
+                <span>تيليجرام</span>
+                <span class="platform-count" id="telegramCount">0</span>
+            </button>
+            <button class="platform-tab whatsapp" data-platform="whatsapp">
+                <i class="fab fa-whatsapp"></i>
+                <span>واتساب</span>
+                <span class="platform-count" id="whatsappCount">0</span>
+            </button>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن مجموعة...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+        </div>
+        <div class="no-results" id="noResults">
+            <i class="fas fa-search"></i>
+            <p>لا توجد نتائج للبحث</p>
+        </div>
+        <div id="contentContainer"></div>
+    </main>
+
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة © 2023 منصة رواد التعليمية</p>
+    </footer>
+
+    <script>
+        // Data from the user
+        const linksData = {
+            "https://t.me/joinchat/RQmTpg_VNsgoE7bP": "رواد التعليمية لملتقى طلاب جامعة زايد",
+            "https://t.me/joinchat/Sj25Qfb4w-Hh7tTO": "رواد التعليمية الجامعات الطبية",
+            "https://t.me/rwaadd1122": "رواد التعليمية لملتقى طلاب جامعة عجمان جميع التخصصات",
+            "https://t.me/+uwuSUgFM2i5hNTNk": "رواد التعليمية للجامعات",
+            "https://t.me/rwaaaad112233": "رواد التعليمية جامعات",
+            "https://t.me/+yOv3Z0VE4NE4MTdk": "رواد التعليمية لمتلقى طلاب جامعة الامارات",
+            "https://t.me/+DFnkSRlNFGU5M2Rk": "رواد التعليمية لملتقى طلاب جامعة الخليج الطبية",
+            "https://t.me/+kIJ_aewD_VllODdk": "رواد الجيل التعليمية لحلول الف الصف الثاني عشرعام احتياطي",
+            "https://t.me/+0CLon4hG6DhjYjlk": "رواد الجيل التعليمية الصف الثالث الاحتياطي",
+            "https://t.me/+Z7ZSyNoNPhE2MGJk": "رواد الجيل التعليمية الصف الرابع احتياطي",
+            "https://t.me/+cG0FmFlmvShkYTU0": "رواد الجيل التعليمية الصف الخامس احتياطي",
+            "https://t.me/+cOBZZ3zvoBc3NmFk": "رواد الجيل لحلول الف الصف السادس احتياطي",
+            "https://t.me/+LyyvDIV_Pt9kYjE0": "رواد الجيل لحلول الف الصف السابع احتياطي",
+            "https://t.me/+4woPHd6V5lpjNWE0": "رواد الجيل لحلول الف الصف الثامن احتياطي",
+            "https://t.me/+A_FPEB6xXuk2ZTU8": "رواد الجيل لحلول الف الصف التاسع عام ومتقدم احتياطي",
+            "https://t.me/+WXl2sEHvKCFlZTRk": "رواد الجيل لحلول الف الصف العاشرعام ومتقدم احتياطي",
+            "https://t.me/+QKsjPc5O_704M2Vk": "رواد الجيل التعليمية لحلول الف للصف الحادي عشر متقدم",
+            "https://t.me/+gcpvrBC70kY1MWY0": "رواد الجيل التعليمية لحلول الف الصف الحادي عشر عام احتياطي",
+            "https://t.me/djdjdkdjs": "رواد التعليمية الصف ثاني عشر نخبة",
+            "https://t.me/rowwadedu": "منصة رواد التعليمية",
+            "https://t.me/+72tIPvJYC7U4MjU0": "رواد التعليمية للصف الثاني2025/2026",
+            "https://t.me/+vjnxv-c3AehhYjQ0": "رواد التعليمية الصف الثالث 2025/2026",
+            "https://t.me/+fSuhNN5LkDA4NGFk": "رواد التعليمية الصف الرابع 2025/2026",
+            "https://t.me/+ibF6rVYT7tg0ODE0": "رواد التعليمية الصف الخامس عام ومتقدم 2025/2026",
+            "https://t.me/+Oab7fGH6r5Q0Njlk": "رواد التعليمية الصف السادس عام 2025/2026",
+            "https://t.me/+SENxAmF0Ozs3NWNk": "رواد التعليمية الصف السابع 2025/2026",
+            "https://t.me/+Csb5VpEE6kAyNjk8": "رواد التعليمية الصف الثامن عام 2025/2026",
+            "https://t.me/+QJwBT3R_SkQ4YmNk": "رواد التعليمية الصف التاسع العام 2025/2026",
+            "https://t.me/+r3woNCQlz-01Njlk": "رواد التعليمية الصف العاشر عام 2025/2026",
+            "https://t.me/+xKqe-br0ofNjOGY0": "رواد التعليمية الصف الحادي عشر عام2025/2026",
+            "https://t.me/dffgghhhh": "رواد التعليمية صف ثاني عشر عام2025/2026",
+            "https://t.me/rwad123456": "رواد التعليمية للجامعات",
+            "https://t.me/+YWtmTDVkbX5iOTU0": "رواد التعليمية للصف السادس متقدم 2025/2026",
+            "https://t.me/+HrL99oFf0oFjYWRk": "رواد التعليمية الصف السابع متقدم 2025/2026",
+            "https://t.me/ghhjjjiuytfvbnj": "رواد التعليمية ثامن متقدم 2025/2026",
+            "https://t.me/fggfddjj": "رواد التعليمية الصف التاسع متقدم 2025/2026",
+            "https://t.me/ettyuuuiookkjh": "رواد التعليمية الصف العاشر متقدم2025/2026",
+            "https://t.me/djdjdjdjdsaq": "رواد التعليمية الصف الحادي عشرمتقدم 2025/2026",
+            "https://t.me/+FkID7Cy7TJY2ZjM0": "رواد التعليمية ثاني عشر متقدم2025/2026",
+            "https://t.me/rowaaaad": "رواد التعليمية للجامعات",
+            "https://t.me/ghhhjjjjjkkooookjjnb": "رواد التعليمية الصف الثاني عشرنخبة",
+            "https://chat.whatsapp.com/Lbx9ODlHVqrGi9OMtdQztL": "رواد التعليمية للصف الثاني أجيال",
+            "https://chat.whatsapp.com/I0Zf7TgfSNj4lbMQrnkPln": "رواد التعليمية لطلاب مدارس أجيال الصف الثالث 2025/2026",
+            "https://chat.whatsapp.com/J36j0wmH6ZaJQxIjVAlqSo": "رواد لطلاب مدارس الاجيال الصف الرابع2025/2026",
+            "https://chat.whatsapp.com/GzgRofHf7ry8QYVKuryaF1": "رواد التعليمية للصف الخامس متقدم 2025/2026",
+            "https://chat.whatsapp.com/EB2mZn9ssDC0pIRxzkjVkG": "رواد التعليمية الصف السادس متقدم2025/2026",
+            "https://chat.whatsapp.com/GdRAHNxWfIB9yS9tsHUEnc": "رواد التعليمية صف السابع متقدم 2025/2026",
+            "https://chat.whatsapp.com/Ir7a0EmX9KwHeZKhISGuxF": "رواد التعليمية الصف التاسع متقدم 2025/2026",
+            "https://chat.whatsapp.com/FoxNHOuxvG3GWPYECf9uX2": "رواد التعليمية الصف التاسع متقدم 2025/2026",
+            "https://chat.whatsapp.com/JFhZWVvgsKX9BqpyjWMUQy": "رواد التعليمية الصف عاشر متقدم 2025/2026",
+            "https://chat.whatsapp.com/Ge2rrrgFimFF3yXH55xGYl": "رواد التعليمية الصف العاشر متقدم 2025/2026",
+            "https://chat.whatsapp.com/IbT4aorzKEvFPWTIX3U9KC": "رواد التعليمية الصف الحادي عشر متقدم 2025/2026",
+            "https://chat.whatsapp.com/HgzSfsSkucMJiyPrhk2rSG": "روادالتعليميه الحادي عشرمتقدم 2025/2026",
+            "https://chat.whatsapp.com/LHXOXwpfpf29l7rBpJzZGJ": "رواد التعليمية حادي عشر متقدم2025/2026",
+            "https://chat.whatsapp.com/LTLBmIZhpkxDoZfmEKS5Mh": "رواد التعليمية الصف ثاني عشر متقدم2025/2026",
+            "https://chat.whatsapp.com/DB3VACbIMbJ5GP4awsbIF6": "رواد التعليمية الصف ثاني عشر متقدم2025/2026",
+            "https://chat.whatsapp.com/JVjFBTw89zjB0HDEq3XEBL": "رواد التعليمية الصف الثاني عشر متقدم2025",
+            "https://chat.whatsapp.com/CrdRqbTffdv4JdOcDHSyXy": "رواد التعليمية الصف الثاني عشر نخبة 2025",
+            "https://chat.whatsapp.com/IODwmv0rqmjGmT56YkYArH": "رواد التعليمية الصف الثاني عشر نخبه 2025",
+            "https://chat.whatsapp.com/HX28Qk3cgZCHmiU0gPs96j": "رواد التعليمية للجامعات",
+            "https://chat.whatsapp.com/JTIKcZGAPuZ13ARVtEeM7G": "رواد التعليمية ثامن تكنولوجيا2025/2026",
+            "https://chat.whatsapp.com/EzUPETcJv4E6bxhYQfSTPN": "رواد التعليمية الصف التاسع تكنولوجيا2025/2026",
+            "https://chat.whatsapp.com/F1TeXDE67Tx92kUll3cGFW": "رواد التعليمية صف عاشرتكنولوجيا2025/2026",
+            "https://chat.whatsapp.com/CMYmjh47PJD5IVj6o8yFr8": "رواد التعليمية صف حادي عشرتكنولوجيا2025/2026",
+            "https://chat.whatsapp.com/JOhM4UIYIwV6rlM0rUG4nm": "رواد التعليمية ثاني عشر تكنولوجيا2025/2026",
+            "https://chat.whatsapp.com/DWPSMegplKp9VvzxAQCxVe": "رواد التعليمية12تكنولوجيا",
+            "https://chat.whatsapp.com/JEKXLFGpzDhLCEcy1UDyIX": "رواد التعليمية للصف الثاني2025/2026",
+            "https://chat.whatsapp.com/FLeZMcetGsqHGE6rDhNibs": "رواد التعليمية الصف الثالث2025/2026",
+            "https://chat.whatsapp.com/CXFpBDpmvos4aNanDTTPeS": "رواد التعليمية الصف الرابع2025/2026",
+            "https://chat.whatsapp.com/EbufCnjWJ5KHrjTcK50yuO": "رواد التعليمية الصف الخامس عام2025/2026",
+            "https://chat.whatsapp.com/GaE6lgzW55pD6AzueOwkiL": "رواد التعليمية الصف الخامس عام2025/2026",
+            "https://chat.whatsapp.com/COaU4JaIKOLDvy8Ei1NNOX": "رواد التعليمية الصف السادس تكنولوجيا 2025/2026",
+            "https://chat.whatsapp.com/BXY9DfNIyMUAvJS4A45JHR": "رواد التعليمية الصف السادس عام2025/2026",
+            "https://chat.whatsapp.com/IWbbRydOKGXLfaXb49QrpD": "رواد التعليمية الصف السابع2026/2025",
+            "https://chat.whatsapp.com/DLTE06TmkD3F6tKPJuCHEr": "رواد التعليمية صف سابع تكنولوجيا 2025/2026",
+            "https://chat.whatsapp.com/DDMN3gUvPFGLkODP0T41g7": "رواد التعليمية الصف الثامن عام2025/2026",
+            "https://chat.whatsapp.com/HXNCzzbsMQL8WsltWQDFvD": "رواد التعليمية للصف الثامن عام 2025/2026",
+            "https://chat.whatsapp.com/KZOy9HT0VRWJyDWMWHkSJV": "رواد التعليمية الصف الثامن 2025/2026",
+            "https://chat.whatsapp.com/HQPpSNCHMGZ6NIboBp9KMh": "رواد التعليمية للصف التاسع عام2025/2026",
+            "https://chat.whatsapp.com/CDd91RPuSWr0F8pPPQZtDw": "رواد التعليمية الصف عاشر عام 2025/2026",
+            "https://chat.whatsapp.com/DpEJC6fUHZbFv61p1QZ22U": "رواد التعليمية حادي عشر عام2025/2026",
+            "https://chat.whatsapp.com/JcYCVRaqJqRDYGP8WMxN8W": "رواد التعليمية للصف ثاني عشر عام2025/2026",
+            "https://chat.whatsapp.com/JSyJoXiT1152XqkjqLhMYe": "رواد التعليمية الصف الثاني عشر عام2025",
+            "https://chat.whatsapp.com/LUXa7OrU45KKV0ZMnuok8C": "رواد التعليمية جامعات",
+            "https://chat.whatsapp.com/BT11PeApwycHbRmwCpIV9R": "رواد التعليميه جامعات 2025/2026",
+            "https://chat.whatsapp.com/JQyWvbw25KFHJaBmiRwki1": "رواد التعليمية ايلتس",
+            "https://chat.whatsapp.com/IqNISPy0BFUE7E3MyI1txH": "رواد التعليميه توفل",
+            "https://chat.whatsapp.com/GsYLR314B89ANrPDr1Qema": "رواد التعليميه كيمياء",
+            "https://chat.whatsapp.com/FW0t7YzYOwkErRT4dCeP7b": "رواد تأسيس لغة عربية ونحو مع مس سحر",
+            "https://chat.whatsapp.com/LSdWrgukuNuGJ1CgUxP2KL": "رواد للغة الإنجليزية",
+            "https://chat.whatsapp.com/Fl60vt4WEI16KP92CjkZ7E": "رواد رياضيات عام /متقدم /نخبه سابقا",
+            "https://chat.whatsapp.com/HQyiIf7EqzW3FAzyNO13aN": "Rowad education Mental math",
+            "https://chat.whatsapp.com/J7mi66cHKKc5UdSpplNulR": "رواد تأسيس لغة عربية 2 مع مس/ سحر",
+            "https://chat.whatsapp.com/DwmbpMhpzVMC5e7TrvMqCK": "رواد تأسيس اللغة الفرنسية",
+            "http://wa.me/971566494600": "rwad uae",
+            "http://t.me/ROAD_UAE": "مالكه رواد الإمارات"
+        };
+
+        // Grade organization - Fixed order with specific keywords first
+        const gradeOrder = [
+            { name: "روضة والصف الأول", icon: "fa-baby", keywords: ["روضة", "أول"] },
+            { name: "الصف الثاني", icon: "fa-2", keywords: ["ثاني"] },
+            { name: "الصف الثالث", icon: "fa-3", keywords: ["ثالث"] },
+            { name: "الصف الرابع", icon: "fa-4", keywords: ["رابع"] },
+            { name: "الصف الخامس", icon: "fa-5", keywords: ["خامس"] },
+            { name: "الصف السادس", icon: "fa-6", keywords: ["سادس"] },
+            { name: "الصف السابع", icon: "fa-7", keywords: ["سابع"] },
+            { name: "الصف الثامن", icon: "fa-8", keywords: ["ثامن"] },
+            { name: "الصف التاسع", icon: "fa-9", keywords: ["تاسع"] },
+            { name: "الصف العاشر", icon: "fa-10", keywords: ["عاشر"] },
+            { name: "الصف الحادي عشر", icon: "fa-11", keywords: ["حادي عشر"] },
+            { name: "الصف الثاني عشر", icon: "fa-12", keywords: ["ثاني عشر"] },
+            { name: "الجامعات", icon: "fa-graduation-cap", keywords: ["جامعة", "جامعات"] },
+            { name: "مواد دراسية", icon: "fa-book", keywords: ["كيمياء", "لغة", "رياضيات", "نحو", "Mental math", "تأسيس"] },
+            { name: "اختبارات", icon: "fa-certificate", keywords: ["ايلتس", "توفل", "نخبة"] },
+            { name: "رسمي", icon: "fa-star", keywords: ["رواد الإمارات", "rwad uae", "منصة رواد", "مالكه"] }
+        ];
+
+        // Get platform type
+        function getPlatformType(url) {
+            if (url.includes('t.me')) {
+                return 'telegram';
+            } else if (url.includes('whatsapp.com') || url.includes('wa.me')) {
+                return 'whatsapp';
+            }
+            return 'other';
+        }
+
+        // Fixed categorization function - check for specific patterns first
+        function categorizeByGrade(name) {
+            // Check for compound grades first (more specific)
+            if (name.includes("ثاني عشر")) return "الصف الثاني عشر";
+            if (name.includes("حادي عشر")) return "الصف الحادي عشر";
+            if (name.includes("عاشر")) return "الصف العاشر";
+            if (name.includes("تاسع")) return "الصف التاسع";
+            if (name.includes("ثامن")) return "الصف الثامن";
+            if (name.includes("سابع")) return "الصف السابع";
+            if (name.includes("سادس")) return "الصف السادس";
+            if (name.includes("خامس")) return "الصف الخامس";
+            if (name.includes("رابع")) return "الصف الرابع";
+            if (name.includes("ثالث")) return "الصف الثالث";
+            if (name.includes("ثاني")) return "الصف الثاني";
+            if (name.includes("أول")) return "روضة والصف الأول";
+            
+            // Check for other categories
+            if (name.includes("جامعة") || name.includes("جامعات")) return "الجامعات";
+            if (name.includes("كيمياء") || name.includes("لغة") || name.includes("رياضيات") || 
+                name.includes("نحو") || name.includes("Mental math") || name.includes("تأسيس")) return "مواد دراسية";
+            if (name.includes("ايلتس") || name.includes("توفل") || name.includes("نخبة")) return "اختبارات";
+            if (name.includes("رواد الإمارات") || name.includes("rwad uae") || 
+                name.includes("منصة رواد") || name.includes("مالكه")) return "رسمي";
+            
+            return "أخرى";
+        }
+
+        // Create particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = Math.random() * 10 + 15 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Create grade section
+        function createGradeSection(grade, links) {
+            const section = document.createElement('div');
+            section.className = 'grade-section';
+            section.dataset.grade = grade.name;
+            
+            const gradeInfo = gradeOrder.find(g => g.name === grade.name);
+            const icon = gradeInfo ? gradeInfo.icon : 'fa-folder';
+            
+            section.innerHTML = `
+                <div class="grade-header">
+                    <div class="grade-icon">
+                        <i class="fas ${icon}"></i>
+                    </div>
+                    <h2 class="grade-title">${grade.name}</h2>
+                    <span class="grade-count">${links.length} مجموعة</span>
+                </div>
+                <div class="links-grid">
+                    ${links.map(link => createLinkCard(link.url, link.name)).join('')}
+                </div>
+            `;
+            
+            return section;
+        }
+
+        // Create link card
+        function createLinkCard(url, name) {
+            const platform = getPlatformType(url);
+            
+            const platformIcon = platform === 'telegram' ? 
+                '<i class="fab fa-telegram platform-icon"></i>' : 
+                '<i class="fab fa-whatsapp platform-icon"></i>';
+            
+            return `
+                <div class="link-card ${platform}" data-platform="${platform}">
+                    <h3>${name}</h3>
+                    <a href="${url}" target="_blank">
+                        انضم للمجموعة ${platformIcon}
+                    </a>
+                </div>
+            `;
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            const contentContainer = document.getElementById('contentContainer');
+            const searchInput = document.getElementById('searchInput');
+            const platformTabs = document.querySelectorAll('.platform-tab');
+            const noResults = document.getElementById('noResults');
+            const loading = document.getElementById('loading');
+            const allCount = document.getElementById('allCount');
+            const telegramCount = document.getElementById('telegramCount');
+            const whatsappCount = document.getElementById('whatsappCount');
+            
+            let currentPlatformFilter = 'all';
+            
+            // Process and organize data
+            const organizedData = {
+                all: {},
+                telegram: {},
+                whatsapp: {}
+            };
+            
+            Object.entries(linksData).forEach(([url, name]) => {
+                const platform = getPlatformType(url);
+                const grade = categorizeByGrade(name);
+                
+                // Add to 'all'
+                if (!organizedData.all[grade]) {
+                    organizedData.all[grade] = [];
+                }
+                organizedData.all[grade].push({ url, name });
+                
+                // Add to specific platform
+                if (platform === 'telegram' || platform === 'whatsapp') {
+                    if (!organizedData[platform][grade]) {
+                        organizedData[platform][grade] = [];
+                    }
+                    organizedData[platform][grade].push({ url, name });
+                }
+            });
+            
+            // Count links by platform
+            let telegramLinksCount = 0;
+            let whatsappLinksCount = 0;
+            
+            Object.entries(organizedData.telegram).forEach(([grade, links]) => {
+                telegramLinksCount += links.length;
+            });
+            
+            Object.entries(organizedData.whatsapp).forEach(([grade, links]) => {
+                whatsappLinksCount += links.length;
+            });
+            
+            // Update counts
+            allCount.textContent = telegramLinksCount + whatsappLinksCount;
+            telegramCount.textContent = telegramLinksCount;
+            whatsappCount.textContent = whatsappLinksCount;
+            
+            // Function to render content
+            function renderContent() {
+                contentContainer.innerHTML = '';
+                
+                const platformData = organizedData[currentPlatformFilter];
+                if (platformData) {
+                    gradeOrder.forEach(grade => {
+                        if (platformData[grade.name] && platformData[grade.name].length > 0) {
+                            const section = createGradeSection(grade, platformData[grade.name]);
+                            contentContainer.appendChild(section);
+                        }
+                    });
+                }
+                
+                // Apply search filter if exists
+                if (searchInput.value) {
+                    filterContent();
+                }
+            }
+            
+            // Filter content
+            function filterContent() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const sections = document.querySelectorAll('.grade-section');
+                let totalVisible = 0;
+                
+                sections.forEach(section => {
+                    const cards = section.querySelectorAll('.link-card');
+                    let sectionVisible = false;
+                    
+                    cards.forEach(card => {
+                        const name = card.querySelector('h3').textContent.toLowerCase();
+                        if (name.includes(searchTerm)) {
+                            card.style.display = 'block';
+                            sectionVisible = true;
+                            totalVisible++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                    
+                    section.style.display = sectionVisible ? 'block' : 'none';
+                });
+                
+                // Show no results message if needed
+                if (totalVisible === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+            }
+            
+            // Platform tabs functionality
+            platformTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    platformTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentPlatformFilter = this.dataset.platform;
+                    
+                    renderContent();
+                });
+            });
+            
+            // Search functionality
+            searchInput.addEventListener('input', filterContent);
+            
+            // Initial render
+            setTimeout(() => {
+                loading.style.display = 'none';
+                renderContent();
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
