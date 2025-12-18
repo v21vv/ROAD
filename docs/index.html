@@ -21,7 +21,7 @@
             overflow-x: hidden;
         }
 
-        /* Dark UAE Flag Background */
+        /* Dark UAE Flag Background (Correct UAE Flag) */
         .uae-flag {
             position: fixed;
             top: 0;
@@ -29,10 +29,11 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: linear-gradient(to bottom, 
-                #8B0000 0%, #8B0000 33.33%, 
-                #2a2a2a 33.33%, #2a2a2a 66.66%, 
-                #0a0a0a 66.66%, #0a0a0a 100%);
+            /* Top: Green, Middle: White, Bottom: Black */
+            background: linear-gradient(to bottom,
+                #00732F 0%, #00732F 33.33%,
+                #F7F7F7 33.33%, #F7F7F7 66.66%,
+                #0A0A0A 66.66%, #0A0A0A 100%);
             opacity: 0.9;
         }
 
@@ -43,7 +44,8 @@
             left: 0;
             width: 25%;
             height: 100%;
-            background: #004d2a;
+            /* Left vertical Red bar */
+            background: #CE1126;
         }
 
         /* Animated particles */
